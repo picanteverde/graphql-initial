@@ -51,6 +51,8 @@ type Query {
   name( name: String): [HNNews]
 
   users: [User]
+
+  usersSearch(pattern: String): [User]
 }
 
 # we need to tell the server which types represent the root query
@@ -89,10 +91,15 @@ const resolvers = {
     users() {
       return usersTableMySQL;
     },
+
+    usersSearch(root, { pattern }) {
+      return usersTableMySQL.filter(u => (u.name.indexOf(pattern) !== -1));
+    },
   },
   User: {
 
     news(obj) {
+      console.log('FETCH');
       return fetch(`https://hn.algolia.com/api/v1/search?query=${obj.name}`)
         .then(res => res.json())
         .then(res => res.hits.map(n => ({
