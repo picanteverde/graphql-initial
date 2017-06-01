@@ -1,30 +1,11 @@
 import 'babel-polyfill';
 import express from 'express';
 import bodyParser from 'body-parser';
-
-import {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql';
-
 import graphqlHTTP from 'express-graphql';
 
-const app = express();
+import schema from './schema';
 
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'RootQueryType',
-    fields: {
-      hello: {
-        type: GraphQLString,
-        resolve() {
-          return 'world';
-        },
-      },
-    },
-  }),
-});
+const app = express();
 
 app.use(bodyParser.json());
 
